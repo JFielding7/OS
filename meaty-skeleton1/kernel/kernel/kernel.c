@@ -4,5 +4,5 @@
 
 void kernel_main(void) {
 	terminal_initialize();
-	printf("%u\n", 1 << 31);
+	printf("%d\n", strcmp("DK", "DJ"));
 }
