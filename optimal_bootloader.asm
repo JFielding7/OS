@@ -6,11 +6,11 @@ start:
     mov si, optimal_question
     call print_si
     call get_line
+print_optimal_answer:
     mov si, optimal_answer
     call print_si
     call print_new_line
-    cli
-    hlt
+    jmp print_optimal_answer
 
 
 get_line_loop:
@@ -55,7 +55,7 @@ print_al:
 
 
 optimal_question db 'Who Won? ', 0
-optimal_answer db 'DK Won of course, he is optimal!', 0
+optimal_answer db 'DK Won', 0
 
 
 times 510-($-$$) db 0
