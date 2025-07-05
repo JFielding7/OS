@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
@@ -24,7 +23,7 @@ static inline void terminal_set_entry(size_t row, size_t col, unsigned char c) {
 	terminal_buffer[terminal_buffer_index(row, col)] = vga_entry(c, terminal_color);
 }
 
-void terminal_initialize(void) {
+void terminal_init(void) {
 	terminal_row = 0;
 	terminal_col = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GRAY, VGA_COLOR_BLACK);
