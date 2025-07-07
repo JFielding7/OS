@@ -34,6 +34,8 @@ kernel/gdt.o \
 kernel/gdt_asm.o \
 kernel/idt.o \
 kernel/idt_asm.o \
+kernel/isr.o \
+kernel/isr_asm.o \
 
 OBJS=\
 $(ARCHDIR)/crti.o \

@@ -4,6 +4,7 @@
 
 #include "../include/kernel/gdt.h"
 #include "../include/kernel/idt.h"
+#include "../include/kernel/isr.h"
 
 
 struct idt_entry {
@@ -18,16 +19,7 @@ struct idt_entry idt[IDT_SIZE];
 
 
 extern void load_idt(uint16_t limit, uint32_t offset);
-extern void isr_wrapper(void);
 
-void print_dk() {
-    puts("DK won");
-}
-
-void default_isr() {
-    puts("Default isr");
-    __asm__ volatile("hlt\n");
-}
 
 void idt_set_entry(size_t i, uint32_t offset, uint16_t gdt_segment_selector, uint8_t type_attributes) {
     struct idt_entry *entry = idt + i;
@@ -40,11 +32,11 @@ void idt_set_entry(size_t i, uint32_t offset, uint16_t gdt_segment_selector, uin
 
 void idt_init() {
     for (size_t i = 0; i < IDT_SIZE; i++) {
-        idt_set_entry(i, (uint32_t) default_isr,
+        idt_set_entry(i, (uint32_t) isr_stub_default,
             KERNEL_CODE_SEGMENT, IDT_DEFAULT_TYPE_ATTRIBUTES);
     }
 
-    idt_set_entry(0x80, (uint32_t) isr_wrapper,
+    idt_set_entry(0x80, (uint32_t) isr_stub_80,
             KERNEL_CODE_SEGMENT, IDT_DEFAULT_TYPE_ATTRIBUTES);
 
     load_idt(sizeof(idt) - 1, (uint32_t) idt);

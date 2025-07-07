@@ -12,10 +12,3 @@ load_idt:
     movl %eax, idtr+2
     lidt idtr
     ret
-
-    .globl   isr_wrapper
-isr_wrapper:
-    pushal
-    call print_dk
-    popal
-    iret

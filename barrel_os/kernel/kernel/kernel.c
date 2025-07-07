@@ -13,4 +13,5 @@ void kernel_main(void) {
 
 	printf("Barrel OS kernel says: DK won in %dns again\n", 1);
 	__asm__ volatile ("int $0x80");
+	__asm__ volatile ("int $0x81");
 }
