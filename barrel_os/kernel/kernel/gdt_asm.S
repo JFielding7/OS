@@ -1,7 +1,7 @@
     .section .data
 gdtr:
     .word 0 # limit
-    .long 0 # base
+    .long 0 # offset
 
     .section .text
     .global load_gdt

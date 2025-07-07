@@ -1,6 +1,59 @@
 #ifndef GDT_H
 #define GDT_H
 
+/* Entries */
+#define GDT_SIZE 3
+#define GDT_NULL_INDEX 0
+#define GDT_KERNEL_CODE_INDEX 1
+#define GDT_KERNEL_DATA_INDEX 2
+
+
+/* GDT Access Byte Bits */
+#define GDT_PRESENT_FLAG             (1 << 7)
+
+#define GDT_RING0               0
+#define GDT_RING3               3
+
+#define GDT_SYSTEM_SEGMENT      0 // 0 = system
+#define GDT_NON_SYSTEM_SEGMENT  1 // 1 = code/data
+
+#define GDT_NON_EXECUTABLE      0
+#define GDT_EXECUTABLE          1
+
+#define GDT_DIRECTION_UP        0
+#define GDT_DIRECTION_DOWN      1
+
+#define GDT_READABLE            1 // For code: readable
+#define GDT_WRITABLE            1 // For data: writable
+
+/* Access Bytes */
+#define ACCESS_BYTE(dpl, seg, ex, dc, rw) (GDT_PRESENT_FLAG | (dpl << 5) | (seg << 4) | (ex << 3) | (dc << 2) | (rw << 1))
+
+#define GDT_KERNEL_CODE_ACCESS ACCESS_BYTE(GDT_RING0, GDT_NON_SYSTEM_SEGMENT, GDT_EXECUTABLE, GDT_DIRECTION_UP, GDT_READABLE)
+#define GDT_KERNEL_DATA_ACCESS ACCESS_BYTE(GDT_RING0, GDT_NON_SYSTEM_SEGMENT, GDT_NON_EXECUTABLE, GDT_DIRECTION_UP, GDT_READABLE)
+
+#define GDT_USER_CODE_ACCESS ACCESS_BYTE(GDT_RING3, GDT_NON_SYSTEM_SEGMENT, GDT_EXECUTABLE, GDT_DIRECTION_UP, GDT_READABLE)
+#define GDT_USER_DATA_ACCESS ACCESS_BYTE(GDT_RING3, GDT_NON_SYSTEM_SEGMENT, GDT_NON_EXECUTABLE, GDT_DIRECTION_UP, GDT_READABLE)
+
+
+/* Flags */
+#define GDT_FLAG_4K_GRAN  (1 << 3)
+#define GDT_FLAG_32BIT    (1 << 2)
+
+#define KERNEL_CODE_FLAGS (GDT_FLAG_4K_GRAN | GDT_FLAG_32BIT)
+#define KERNEL_DATA_FLAGS (GDT_FLAG_4K_GRAN | GDT_FLAG_32BIT)
+
+
+/* Segment Selectors */
+#define GDT_INDICATOR 0
+#define LDT_INDICATOR 1
+
+#define SEGMENT_SELECTOR(index, ti, rpl) ((index << 3) | (ti << 2) | rpl)
+
+#define KERNEL_CODE_SEGMENT SEGMENT_SELECTOR(GDT_KERNEL_CODE_INDEX, GDT_INDICATOR, GDT_RING0)
+#define KERNEL_DATA_SEGMENT SEGMENT_SELECTOR(GDT_KERNEL_DATA_INDEX, GDT_INDICATOR, GDT_RING0)
+
+
 void gdt_init();
 
 #endif //GDT_H
